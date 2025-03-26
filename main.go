@@ -19,10 +19,10 @@ import (
 // Document represents a file uploaded to the service
 // with its metadata stored in the database
 type Document struct {
-	ID         string    `json:"id"`         // Unique identifier for the document
-	Name       string    `json:"name"`       // Original filename
-	URL        string    `json:"url"`        // URL to download the document
-	UploadedAt time.Time `json:"uploaded_at"` // Timestamp of the upload
+	ID         string    `json:"id"`        
+	Name       string    `json:"name"`       
+	URL        string    `json:"url"`        
+	UploadedAt time.Time `json:"uploaded_at"` 
 }
 
 // Directory where uploaded files are stored
@@ -31,7 +31,7 @@ const uploadDir = "/app/uploads"
 // Global database connection
 var db *sql.DB
 
-// HTML template for the homepage with upload form - do not modify
+// HTML template for the homepage with upload form
 const htmlTemplate = `<!DOCTYPE html>
 <html>
 <head>
@@ -180,7 +180,6 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 
 // downloadHandler serves file downloads by ID
 // It retrieves file metadata from the database and serves the file
-// with appropriate headers to force download rather than in-browser display
 func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	// Extract document ID from URL
 	vars := mux.Vars(r)
