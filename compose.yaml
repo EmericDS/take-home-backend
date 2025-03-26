@@ -1,0 +1,48 @@
+services:
+  upload-service:
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile'
+    depends_on:
+      - 'postgres'
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./uploads:/app/uploads"
+    environment:
+      - "POSTGRES_DSN=postgres://postgres:admin@postgres:5432/main?sslmode=disable"
+    # Note that you will need to expose the port your server is running on here.
+    # For reference: https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/#use-docker-compose.
+    # Note that you will need to bind mount the directory where your uploads are stored here.
+    # For reference: https://docs.docker.com/engine/storage/bind-mounts/#use-a-bind-mount-with-compose.
+
+  postgres:
+    image: 'postgres:17.0-alpine'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=admin'
+      - 'POSTGRES_DB=main'
+    volumes:
+      - 'pg-data:/var/lib/postgresql/data'
+
+#  # The following is only provided as a base if you choose to do the object storage bonus.
+#  # Don't forget to also uncomment the last line of this file if you add MinIO.
+#  # For reference: https://min.io/docs/minio/container/index.html.
+#  minio:
+#    image: 'quay.io/minio/minio:latest'
+#    command:
+#      - 'server'
+#      - '/mnt/data'
+#      - '--console-address'
+#      - ':9090'
+#    environment:
+#      - 'MINIO_ROOT_USER=root'
+#      - 'MINIO_ROOT_PASSWORD=password'
+#    ports:
+#      - '9090:9090'
+#    volumes:
+#      - 'minio-data:/mnt/data'
+
+volumes:
+  pg-data: {}
+#  minio-data: {}
